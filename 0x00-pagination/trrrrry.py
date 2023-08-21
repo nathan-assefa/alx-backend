@@ -34,13 +34,16 @@ class Server:
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
-        assert type(page) is int and page > 0
-        assert type(page_size) is int and page_size > 0
+        assert isinstance(page, int) and page > 0
+        assert isinstance(page_size, int) and page_size > 0
 
         dataset = self.dataset()
-        data_length = len(dataset)
-        try:
-            index = index_range(page, page_size)
-            return dataset[index[0]:index[1]]
-        except IndexError:
+        total_pages = math.ceil(len(dataset) / page_size)
+
+        if page > total_pages:
             return []
+
+        indexes: Tuple = index_range(page, page_size)
+        start_index: int = indexes[0]
+        end_index: int = indexes[1]
+        return dataset[start_index:end_index]
