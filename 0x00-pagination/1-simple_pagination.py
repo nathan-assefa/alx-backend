@@ -32,7 +32,6 @@ class Server:
         assert isinstance(page_size, int) and page_size > 0
 
         dataset = self.dataset()
-        total_pages = math.ceil(len(dataset) / page_size)
 
         try:
             start_index, end_index = index_range(page, page_size)
