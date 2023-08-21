@@ -4,7 +4,7 @@
 
 import csv
 import math
-from typing import List
+from typing import List, Tuple
 
 
 def index_range(page, page_size):
@@ -43,8 +43,8 @@ class Server:
 
         if page > total_pages:
             return []
-
-        #start_index, end_index = index_range(page, page_size)
+        
         indexes: Tuple = index_range(page, page_size)
-        return dataset[indexes[0]:indexes[1]]
-        #return dataset[start_index:end_index]
+        start_index: int = indexes[0]
+        end_index: int = indexes[1]
+        return dataset[start_index:end_index]
