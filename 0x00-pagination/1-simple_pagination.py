@@ -26,24 +26,21 @@ class Server:
 
         return self.__dataset
 
+    
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
-        """
-            Get the page
-
-            Args:
-                page: Current page
-                page_size: Total size of the page
-
-            Return:
-                List of the pagination done
-        """
         assert isinstance(page, int) and page > 0
         assert isinstance(page_size, int) and page_size > 0
 
-        range: Tuple = index_range(page, page_size)
-        pagination: List = self.dataset()
+        dataset = self.dataset()
+        total_pages = math.ceil(len(dataset) / page_size)
 
-        return (pagination[range[0]:range[1]])
+        if page > total_pages:
+            return []
+
+        indexes: Tuple = index_range(page, page_size)
+        start_index: int = indexes[0]
+        end_index: int = indexes[1]
+        return dataset[start_index:end_index]
 
 
 def index_range(page, page_size):
