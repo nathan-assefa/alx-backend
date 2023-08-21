@@ -9,9 +9,6 @@ from typing import List
 
 def index_range(page, page_size):
     ''' Finding indexes '''
-    if page < 1 or page_size <= 0:
-        raise ValueError("Invalid page or page_size values")
-
     start_index = (page - 1) * page_size
     end_index = start_index + page_size
 
