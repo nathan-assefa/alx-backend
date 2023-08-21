@@ -44,5 +44,7 @@ class Server:
         if page > total_pages:
             return []
 
-        start_index, end_index = index_range(page, page_size)
-        return dataset[start_index:end_index]
+        #start_index, end_index = index_range(page, page_size)
+        indexes: Tuple = index_range(page, page_size)
+        return dataset[indexes[0]:indexes[1]]
+        #return dataset[start_index:end_index]
