@@ -34,13 +34,11 @@ class Server:
         dataset = self.dataset()
         total_pages = math.ceil(len(dataset) / page_size)
 
-        if page > total_pages:
+        try:
+            start_index, end_index = index_range(page, page_size)
+            return dataset[start_index:end_index]
+        except IndexError:
             return []
-
-        indexes: Tuple = index_range(page, page_size)
-        start_index: int = indexes[0]
-        end_index: int = indexes[1]
-        return dataset[start_index:end_index]
 
 
 def index_range(page, page_size):
