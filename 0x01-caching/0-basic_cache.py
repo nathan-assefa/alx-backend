@@ -8,7 +8,7 @@ class BasicCache(BaseCaching):
 
     def put(self, key, item):
         """inseting data into the cache"""
-        if not key and not item:
+        if key or item is not None:
             return
 
         self.cache_data[key] = item
