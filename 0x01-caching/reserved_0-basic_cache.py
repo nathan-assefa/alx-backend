@@ -10,11 +10,9 @@ class BasicCache(BaseCaching):
         """inseting data into the cache"""
         if key or item is not None:
             self.cache_data[key] = item
-    
+
     def get(self, key):
-        """
-        return the value in self.cache_data linked to key.
-        """
-        if key is None or key not in self.cache_data:
-            return None
-        return self.cache_data[key]
+        """Getting data from the cache"""
+        if key and key in self.cache_data:
+            return self.cache_data.get(key)
+        return None
