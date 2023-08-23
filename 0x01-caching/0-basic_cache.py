@@ -5,12 +5,14 @@ from base_caching import BaseCaching
 
 class BasicCache(BaseCaching):
     """Implementing basic caching algorithm"""
-
     def put(self, key, item):
-        """inseting data into the cache"""
-        if key or item is not None:
+        """
+        assign to the dictionary self.cache_data the
+        item value for the key key.
+        """
+        if key and item:
             self.cache_data[key] = item
-    
+
     def get(self, key):
         """
         return the value in self.cache_data linked to key.
