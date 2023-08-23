@@ -9,20 +9,25 @@ class FIFOCache(BaseCaching):
     def __init__(self):
         """intializing attributes"""
         super().__init__()
-        self.order = []
 
     def put(self, key, item):
         """Inserting data to the cache"""
-        if key is None or item is None:
+        if not key or not item:
             pass
+
+        # Check if the key is not precent in the cache_data
+        key_not_exist = True if key not in self.cache_data else False
+
+        if key_not_exist:
+            if len(self.cache_data) >= self.MAX_ITEMS:
+                discard_key = next(iter(self.cache_data))
+                del self.cache_data[discard_key]
+                print("DISCARD: {}".format(discard_key))
+
         else:
-            length = len(self.cache_data)
-            if length >= BaseCaching.MAX_ITEMS and key not in self.cache_data:
-                print("DISCARD: {}".format(self.order[0]))
-                del self.cache_data[self.order[0]]
-                del self.order[0]
-            self.order.append(key)
-            self.cache_data[key] = item
+            del self.cache_data[key]
+
+        self.cache_data[key] = item
 
         """
         if key_not_exist:
