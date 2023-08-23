@@ -4,49 +4,62 @@ from base_caching import BaseCaching
 
 
 class LFUCache(BaseCaching):
+    """LFUCache defines an LFU caching system"""
+
     def __init__(self):
+        """Initialize the LFUCache"""
         super().__init__()
+        # To track the frequency of each key
         self.frequency = {}
+        # To maintain the order of usage for each frequency
+        self.lfu_order = {}
 
     def put(self, key, item):
+        """Cache a key-value pair"""
         if key is not None and item is not None:
+            # Add the key-value pair to the cache
             self.cache_data[key] = item
-            
-            # Update the frequency of the key
+
+            # Update the frequency of the key and its usage order
             if key in self.frequency:
                 self.frequency[key] += 1
             else:
                 self.frequency[key] = 1
-            
+            freq = self.frequency[key]
+
+            if freq in self.lfu_order:
+                self.lfu_order[freq].append(key)
+            else:
+                self.lfu_order[freq] = [key]
+
             if len(self.cache_data) > BaseCaching.MAX_ITEMS:
-                self.evict_least_frequent()
+                # Find the least frequency used item
+                min_freq = min(self.lfu_order)
+                # Remove the least frequency used key
+                lfu_key = self.lfu_order[min_freq].pop(0)
+
+                if not self.lfu_order[min_freq]:
+                    del self.lfu_order[min_freq]
+
+                # Delete the corresponding key from the cache
+                del self.cache_data[lfu_key]
+                # Delete the frequency record
+                del self.frequency[lfu_key]
+                print("DISCARD:", lfu_key)
 
     def get(self, key):
+        """Return the value linked to a given key, or None"""
         if key in self.cache_data:
-            self.update_frequency(key)
+            # Update the frequency and usage order for the accessed key
+            freq = self.frequency[key]
+            self.frequency[key] = freq + 1
+            self.lfu_order[freq].remove(key)
+
+            if freq + 1 in self.lfu_order:
+                self.lfu_order[freq + 1].append(key)
+            else:
+                self.lfu_order[freq + 1] = [key]
+
             return self.cache_data[key]
         else:
             return None
-    
-    def evict_least_frequent(self):
-        min_freq = min(self.frequency.values())
-        lfu_keys = [key for key, freq in self.frequency.items() if freq == min_freq]
-        
-        if len(lfu_keys) > 1:
-            self.evict_least_recent(lfu_keys)  # Use LRU algorithm for ties
-        else:
-            lfu_key = lfu_keys[0]
-            self.remove_key(lfu_key)
-            print("DISCARD:", lfu_key)
-
-    def update_frequency(self, key):
-        self.frequency[key] += 1
-    
-    def evict_least_recent(self, keys):
-        lru_key = min(keys, key=lambda k: self.cache_data[k][1])  # LRU tie-breaker
-        self.remove_key(lru_key)
-        print("DISCARD:", lru_key)
-    
-    def remove_key(self, key):
-        del self.cache_data[key]
-        del self.frequency[key]

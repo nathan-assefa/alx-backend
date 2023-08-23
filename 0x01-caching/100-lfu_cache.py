@@ -17,22 +17,8 @@ class LFUCache(BaseCaching):
     def put(self, key, item):
         """Cache a key-value pair"""
         if key is not None and item is not None:
-            # Add the key-value pair to the cache
-            self.cache_data[key] = item
-
-            # Update the frequency of the key and its usage order
-            if key in self.frequency:
-                self.frequency[key] += 1
-            else:
-                self.frequency[key] = 1
-            freq = self.frequency[key]
-
-            if freq in self.lfu_order:
-                self.lfu_order[freq].append(key)
-            else:
-                self.lfu_order[freq] = [key]
-
-            if len(self.cache_data) > BaseCaching.MAX_ITEMS:
+            key_not_exist = True if key not in self.cache_data else False
+            if len(self.cache_data) >= BaseCaching.MAX_ITEMS and key_not_exist:
                 # Find the least frequency used item
                 min_freq = min(self.lfu_order)
                 # Remove the least frequency used key
@@ -46,6 +32,21 @@ class LFUCache(BaseCaching):
                 # Delete the frequency record
                 del self.frequency[lfu_key]
                 print("DISCARD:", lfu_key)
+
+            # Update the frequency of the key and its usage order
+            if key in self.frequency:
+                self.frequency[key] += 1
+            else:
+                self.frequency[key] = 1
+            freq = self.frequency[key]
+
+            if freq in self.lfu_order:
+                self.lfu_order[freq].append(key)
+            else:
+                self.lfu_order[freq] = [key]
+
+            # Add the key-value pair to the cache
+            self.cache_data[key] = item
 
     def get(self, key):
         """Return the value linked to a given key, or None"""
