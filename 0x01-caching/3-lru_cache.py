@@ -23,12 +23,12 @@ class LRUCache(BaseCaching):
             length = len(self.cache_data)
             if key not in self.cache_data:
                 if length >= BaseCaching.MAX_ITEMS:
-                    print("DISCARD: {}".format(self.usage[0]))
-                    del self.cache_data[self.usage[0]]
-                    del self.usage[0]
+                    lru_key = self.usage.pop()
+                    del self.cache_data[lru_key]
+                    print("DISCARD:", lru_key)
             else:
                 self.usage.remove(key)
-            self.usage.append(key)
+            self.usage.insert(0, key)
             self.cache_data[key] = item
 
     def get(self, key):
@@ -36,7 +36,7 @@ class LRUCache(BaseCaching):
         Return the value linked to a given key, or None
         """
         if key is not None and key in self.cache_data.keys():
-            del self.usage[self.usage.index(key)]
-            self.usage.append(key)
+            self.usage.remove(key)
+            self.usage.insert(0, key)
             return self.cache_data[key]
         return None
