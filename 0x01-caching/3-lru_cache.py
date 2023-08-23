@@ -13,7 +13,7 @@ class LRUCache(BaseCaching):
 
     def put(self, key, item):
         """Inserting data to the cache"""
-        
+
         if key and item:
             key_not_exist = True if key not in self.cache_data else False
             if key_not_exist:
