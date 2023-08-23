@@ -17,18 +17,14 @@ class FIFOCache(BaseCaching):
 
         # Check if the key is not precent in the cache_data
         key_not_exist = True if key not in self.cache_data else False
-
-        if len(self.cache_data) >= self.MAX_ITEMS and key_not_exist:
-            # first get the first data in the cache
-            discard_key = next(iter(self.cache_data))
-
-            # we can also use this method to get the first item in the cache
-            # discard_key = next(key for key in self.cache_data)
-
-            # delete the first item
-            del self.cache_data[discard_key]
-
-            print("DISCARD: {}".format(discard_key))
+        
+        if key_not_exist:
+            if len(self.cache_data) >= self.MAX_ITEMS and key_not_exist:
+                discard_key = next(iter(self.cache_data))
+                del self.cache_data[discard_key]
+                print("DISCARD: {}".format(discard_key))
+        else:
+            del self.cache_data[key]
 
         self.cache_data[key] = item
 
