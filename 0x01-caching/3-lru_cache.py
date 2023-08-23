@@ -34,7 +34,7 @@ class LRUCache(BaseCaching):
 
     def get(self, key):
         """Getting data from the cache"""
-        if key in self.cache_data:
+        if key and key in self.cache_data:
             # Move the accessed key to the front of the LRU order
             self.lru_order.remove(key)
             self.lru_order.insert(0, key)
