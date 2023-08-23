@@ -18,12 +18,33 @@ class FIFOCache(BaseCaching):
         # Check if the key is not precent in the cache_data
         key_not_exist = True if key not in self.cache_data else False
         
-        if len(self.cache_data) >= self.MAX_ITEMS and key_not_exist:
-            discard_key = next(iter(self.cache_data))
-            del self.cache_data[discard_key]
-            print("DISCARD: {}".format(discard_key))
+        if key_not_exist:
+            if len(self.cache_data) >= self.MAX_ITEMS:
+                discard_key = next(iter(self.cache_data))
+                del self.cache_data[discard_key]
+                print("DISCARD: {}".format(discard_key))
+
+        else:
+            del self.cache_data[key]
 
         self.cache_data[key] = item
+
+        '''
+        if key_not_exist:
+            if len(self.cache_data) >= self.MAX_ITEMS:
+                discard_key = next(iter(reversed(self.cache_data)))
+                # or we can use this
+                # last_key = list(self.cache_data.keys())[-1]
+
+                del self.cache_data[discard_key]
+
+                print("DISCARD: {}".format(discard_key))
+
+        else:
+            # If the value is not None, indicating an existing key, it deletes
+            # +the existing key-value pair from the cache before updating it.
+            del self.cache_data[key]
+        '''
 
     def get(self, key):
         """Getting data from the cache"""
