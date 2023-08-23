@@ -1,35 +1,36 @@
 #!/usr/bin/env python3
-""" LRU caching """
+""" BaseCaching module
+"""
 from base_caching import BaseCaching
 
 
 class LRUCache(BaseCaching):
-    """implementing LRU caching algorithm"""
-
+    """
+    FIFOCache defines a FIFO caching system
+    """
     def __init__(self):
-        """intializing attributes"""
+        """
+        Initialize the class with the parent's init method
+        """
         super().__init__()
         self.lru_order = []
 
     def put(self, key, item):
-        """Inserting data to the cache"""
-        if key or item is not None:
-            key_not_exist = True if key not in self.cache_data else False
-            if key_not_exist:
-                if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
-                    # Discard the least recently used item
+        """
+        Cache a key-value pair
+        """
+        if key and item:
+            length = len(self.cache_data)
+            if key not in self.cache_data:
+                if length >= BaseCaching.MAX_ITEMS:
                     lru_key = self.lru_order.pop()
                     del self.cache_data[lru_key]
                     print("DISCARD:", lru_key)
-
             else:
                 self.lru_order.remove(key)
-
             self.lru_order.insert(0, key)
-
             self.cache_data[key] = item
-
-
+    
     def get(self, key):
         """Getting data from the cache"""
         if key and key in self.cache_data:
