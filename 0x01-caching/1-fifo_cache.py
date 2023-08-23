@@ -12,7 +12,7 @@ class FIFOCache(BaseCaching):
 
     def put(self, key, item):
         """Inserting data to the cache"""
-        if not key and not item:
+        if not key or not item:
             pass
 
         # Check if the key is not precent in the cache_data
