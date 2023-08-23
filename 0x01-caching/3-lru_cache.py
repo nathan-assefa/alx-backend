@@ -19,9 +19,7 @@ class LRUCache(BaseCaching):
         """
         Cache a key-value pair
         """
-        if key is None or item is None:
-            pass
-        else:
+        if key and item:
             length = len(self.cache_data)
             if key not in self.cache_data:
                 if length >= BaseCaching.MAX_ITEMS:
