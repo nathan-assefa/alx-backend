@@ -1,42 +1,43 @@
 #!/usr/bin/env python3
-""" LRU caching """
+""" BaseCaching module
+"""
 from base_caching import BaseCaching
 
 
 class LRUCache(BaseCaching):
-    """implementing LRU caching algorithm"""
-
+    """
+    FIFOCache defines a FIFO caching system
+    """
     def __init__(self):
-        """intializing attributes"""
+        """
+        Initialize the class with the parent's init method
+        """
         super().__init__()
-        self.lru_order = []
+        self.usage = []
 
     def put(self, key, item):
-        """Inserting data to the cache"""
-        if key or item is not None:
-            key_not_exist = True if key not in self.cache_data else False
-            if key_not_exist:
-                if len(self.cache_data) >= BaseCaching.MAX_ITEMS:
-                    # Discard the least recently used item
-                    lru_key = self.lru_order.pop()
-                    del self.cache_data[lru_key]
-                    print("DISCARD:", lru_key)
-
-            else:
-                del self.cache_data[key]
-
-            if key in self.lru_order:
-                self.lru_order.remove(key)
-            self.lru_order.insert(0, key)
-
+        """
+        Cache a key-value pair
+        """
+        if key is None or item is None:
+            pass
+        else:
+            length = len(self.cache_data)
+            if length >= BaseCaching.MAX_ITEMS and key not in self.cache_data:
+                print("DISCARD: {}".format(self.usage[0]))
+                del self.cache_data[self.usage[0]]
+                del self.usage[0]
+            if key in self.usage:
+                del self.usage[self.usage.index(key)]
+            self.usage.append(key)
             self.cache_data[key] = item
 
     def get(self, key):
-        """Getting data from the cache"""
-        if key and key in self.cache_data:
-            # Move the accessed key to the front of the LRU order
-            self.lru_order.remove(key)
-            self.lru_order.insert(0, key)
+        """
+        Return the value linked to a given key, or None
+        """
+        if key is not None and key in self.cache_data.keys():
+            del self.usage[self.usage.index(key)]
+            self.usage.append(key)
             return self.cache_data[key]
-        else:
-            return None
+        return None
