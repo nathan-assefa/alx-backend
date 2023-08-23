@@ -30,11 +30,10 @@ class FIFOCache(BaseCaching):
                 del self.order[0]
             self.order.append(key)
             self.cache_data[key] = item
-
+    
     def get(self, key):
-        """
-        Return the value linked to a given key, or None
-        """
-        if key is not None and key in self.cache_data.keys():
-            return self.cache_data[key]
-        return None
+        """Getting data from the cache"""
+        if not key or key not in self.cache_data:
+            return None
+
+        return self.cache_data[key]
