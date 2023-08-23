@@ -9,27 +9,14 @@ class LIFOCache(BaseCaching):
     def __init__(self):
         """intializing attributes"""
         super().__init__()
-        self.order = []
 
     def put(self, key, item):
-        """
-        Cache a key-value pair
-        """
-        if key is None or item is None:
-            return
-        else:
-            length = len(self.cache_data)
-            if length >= BaseCaching.MAX_ITEMS and key not in self.cache_data:
-                print("DISCARD: {}".format(self.order[-1]))
-                del self.cache_data[self.order[-1]]
-                del self.order[-1]
-            if key in self.order:
-                del self.order[self.order.index(key)]
-            self.order.append(key)
-            self.cache_data[key] = item
+        """Inserting data to the cache"""
+        if not key and not item:
+            pass
 
-        '''
-         key_not_exist = True if key not in self.cache_data else False
+        # Check if the key is not precent in the cache_data
+        key_not_exist = True if key not in self.cache_data else False
 
         if key_not_exist:
             if len(self.cache_data) >= self.MAX_ITEMS:
@@ -47,7 +34,6 @@ class LIFOCache(BaseCaching):
             del self.cache_data[key]
 
         self.cache_data[key] = item
-        '''
 
     def get(self, key):
         """Getting data from the cache"""
