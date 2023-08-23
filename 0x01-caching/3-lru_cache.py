@@ -27,7 +27,7 @@ class LRUCache(BaseCaching):
                     del self.cache_data[self.usage[0]]
                     del self.usage[0]
             else:
-                del self.usage.remove(key)
+                self.usage.remove(key)
             self.usage.append(key)
             self.cache_data[key] = item
 
