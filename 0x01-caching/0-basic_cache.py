@@ -15,3 +15,4 @@ class BasicCache(BaseCaching):
         """Getting data from the cache"""
         if key:
             return self.cache_data.get(key)
+        return None
