@@ -27,8 +27,9 @@ class LRUCache(BaseCaching):
 
             if key in self.lru_order:
                 self.lru_order.remove(key)
-
-            self.lru_order.insert(0, key)
+                self.lru_order.insert(0, key)
+            else:
+                self.lru_order.insert(0, key)
 
             self.cache_data[key] = item
 
