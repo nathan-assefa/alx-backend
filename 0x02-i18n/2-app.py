@@ -1,42 +1,44 @@
 #!/usr/bin/env python3
+"""
+Flask app
+"""
+from flask import (
+    Flask,
+    render_template,
+    request
+)
 from flask_babel import Babel
-from flask import Flask, render_template
 
 
-class Config:
-    """Defining the configuration attributes"""
-
+class Config(object):
+    """
+    Configuration for Babel
+    """
     LANGUAGES = ["en", "fr"]
     BABEL_DEFAULT_LOCALE = "en"
     BABEL_DEFAULT_TIMEZONE = "UTC"
 
 
 app = Flask(__name__)
-
-# Using 'from_object' loading configuration settings
-# + from the specified object, in this case from Config class
 app.config.from_object(Config)
-
-# Instantiate the Babel object
 babel = Babel(app)
 
 
 @babel.localeselector
-def get_locale() -> str:
+def get_locale():
     """
-    Determining the best match with our supported languages.
-    **** what is localselector? *****
-    Flask-Babel relies on the locale_selector to determine which
-    language to use for rendering content in your Flask application.
+    Select and return best language match based on supported languages
     """
-    return request.accept_languages.best_match(app.config["LANGUAGES"])
+    return request.accept_languages.best_match(app.config['LANGUAGES'])
 
 
-@app.route("/", strict_slashes=False)
-def hello():
-    """Rendering hello world"""
-    return render_template("2-index.html")
+@app.route('/', strict_slashes=False)
+def index() -> str:
+    """
+    Handles / route
+    """
+    return render_template('2-index.html')
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(port="5000", host="0.0.0.0", debug=True)
