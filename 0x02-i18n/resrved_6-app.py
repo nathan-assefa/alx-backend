@@ -49,10 +49,12 @@ def get_locale() -> str:
         if user_locale in app.config["LANGUAGES"]:
             return user_locale
 
-    localLang = request.headers.get('locale')
-    if localLang in app.config["LANGUAGES"]:
-        return localLang
-    return request.accept_languages.best_match(app.config['LANGUAGES'])
+    # Get locale from request header
+    if request.accept_languages.best_match(app.config["LANGUAGES"]):
+        return header_locale
+
+    # Fallback to default locale
+    return get_locale()
 
 
 @app.route("/", strict_slashes=False)
