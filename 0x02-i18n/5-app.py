@@ -57,6 +57,7 @@ def get_user():
 
 @app.before_request
 def before_request():
+    ''' This function stores user information to the global variable '''
     g.user = get_user()
 
 
