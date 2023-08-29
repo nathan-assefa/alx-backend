@@ -28,10 +28,12 @@ settings that affect how your application behaves.
 # Instantiate the Babel object
 babel = Babel(app)
 
+
 @app.route("/", strict_slashes=False)
 def hello():
     """Rendering hello world"""
     return render_template("0-index.html")
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
