@@ -50,7 +50,7 @@ def get_locale() -> str:
             return user_locale
 
     # Get locale from request header
-    if request.accept_languages.best_match(app.config["LANGUAGES"])
+    if request.accept_languages.best_match(app.config["LANGUAGES"]):
         return header_locale
 
     # Fallback to default locale
