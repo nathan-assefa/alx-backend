@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from flask_babel import Babel
-from flask import Flask
+from flask import Flask, render_template
 
 
 class Config:
@@ -30,6 +30,11 @@ def get_locale():
     language to use for rendering content in your Flask application.
     """
     return request.accept_languages.best_match(app.config["LANGUAGES"])
+
+@app.route("/", strict_slashes=False)
+def hello():
+    """Rendering hello world"""
+    return render_template("0-index.html")
 
 
 if __name__ == '__main__':
