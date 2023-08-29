@@ -1,0 +1,62 @@
+Steps to compile 'i18n' in flask
+
+Step 1: Install Flask-Babel
+# pip install Flask-Babel
+
+Step 2: Add _ or gettext to Isolate Translatable Strings
+# In your Flask app, use the _ or gettext function to mark strings
+  that need to be translated. Wrap these strings with the function like this:
+
+Ex: 	from flask import Flask
+	from flask_babel import Babel, _  # Import the _ function
+
+	app = Flask(__name__)
+	babel = Babel(app)
+
+	@app.route('/')
+	def index():
+    		return _("Welcome to Holberton")  # Mark the string for translation
+
+	if __name__ == '__main__':
+    	app.run()
+
+Step 3:  Create the babel.cfg Configuration File
+# Create a babel.cfg file in your project directory with the appropriate content:
+
+Ex:	[python: **.py]
+	[jinja2: **/templates/**.html]
+	extensions=jinja2.ext.autoescape,jinja2.ext.with_
+
+Step 4: Extract Messages
+# In your terminal, navigate to your project directory and run the following command
+to extract messages and create a messages.pot file:
+---> pybabel extract -F babel.cfg -o messages.pot .
+
+#### .pot file contains all the translatable message IDs (marked with _ or gettext)
+       extracted from your code and templates.
+     It acts as a template that you use to create .po files for each language.
+
+Step 5: Initialize Translation Files
+Run the following commands to initialize translation files.
+Ex: for English (en) and French (fr):
+	pybabel init -i messages.pot -d translations -l en
+	pybabel init -i messages.pot -d translations -l fr
+
+Step 6: Translate Message IDs
+Open the .po files located in the translations/en/LC_MESSAGES and
+translations/fr/LC_MESSAGES directories. Provide translations for the
+message IDs as you mentioned:
+
+	msgid "home_title"
+	msgstr "Welcome to Holberton"
+
+	msgid "home_header"
+	msgstr "Hello world!"
+
+step 7: Compile Translations
+Compile the .po files into .mo files using the following command
+	pybabel compile -d translations
+
+step 8: Run Your Flask App
+	python your_app.py
+
