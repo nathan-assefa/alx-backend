@@ -49,7 +49,7 @@ def get_locale() -> str:
         if user_locale in app.config["LANGUAGES"]:
             return user_locale
 
-    locale = request.headers.get('lrequest.headers.get('locale')ocale')
+    locale = request.headers.get('locale')
     if locale in app.config["LANGUAGES"]:
         return locale
     return request.accept_languages.best_match(app.config['LANGUAGES'])
