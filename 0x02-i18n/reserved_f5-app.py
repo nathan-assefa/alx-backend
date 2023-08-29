@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ working on translation """
 from flask_babel import Babel, request
-from flask import Flask, render_template, session
+from flask import Flask, render_template, g
 
 
 class Config:
@@ -58,7 +58,7 @@ def get_user():
 @app.before_request
 def before_request():
     ''' This function stores user information to the global variable '''
-    session.user = get_user()
+    g.user = get_user()
 
 
 if __name__ == "__main__":
