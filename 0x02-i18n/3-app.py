@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from flask_babel import Babel
+from flask_babel import Babel, request
 from flask import Flask, render_template
 
 
@@ -35,7 +35,7 @@ def get_locale() -> str:
 @app.route("/", strict_slashes=False)
 def hello():
     """Rendering hello world"""
-    return render_template("2-index.html")
+    return render_template("3-index.html")
 
 
 if __name__ == "__main__":
