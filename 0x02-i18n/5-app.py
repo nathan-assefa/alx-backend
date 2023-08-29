@@ -28,12 +28,13 @@ users = {
     4: {"name": "Teletubby", "locale": None, "timezone": "Europe/London"},
 }
 
+
 @babel.localeselector
 def get_locale() -> str:
     """
     Determining the best match with our supported languages.
     """
-    language = app.config['LANGUAGES']
+    language = app.config["LANGUAGES"]
     if "locale" in request.args and request.args["locale"] in language:
         return request.args["locale"]
     return request.accept_languages.best_match(app.config["LANGUAGES"])
@@ -44,13 +45,15 @@ def hello():
     """Rendering hello world"""
     return render_template("5-index.html")
 
+
 def get_user():
     """Returns a user dictionary or None if not found"""
     try:
-        user_id = int(request.args.get('login_as'))
+        user_id = int(request.args.get("login_as"))
         return users.get(user_id)
     except (ValueError, TypeError, KeyError):
         return None
+
 
 @app.before_request
 def before_request():
